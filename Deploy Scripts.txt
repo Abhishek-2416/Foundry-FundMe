@@ -20,4 +20,4 @@ For this we need to create something know as MOCKS for anvil
 
 1. We need to create a mocks file in the test folder and then create a MockV3Aggregator file in this 
 2. After we create the MockV3Aggregator then import this to the HelperConfig file and create 2 store vaiables DECIMALS and INTIAL_PRICE
-3. Provide this DECIMALS and INTIAL_PRICE to the MockV3Aggregator and this is how we get the price of 
+3. Provide this DECIMALS and INTIAL_PRICE to the MockV3Aggregator and this is how we get the priceFeed in the anvil chain
