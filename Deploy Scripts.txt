@@ -1,0 +1,23 @@
+While deploying the scripts one the major issues is that we are hard coding the Sepolia contract address
+
+So what we really want to do is we want to deploy it in such a way that our contracts are modular 
+
+1. First we went to the main contract and we set the price feed in the constructor and set it in the constructor itself as AggregatorV3Interface(priceFeed);
+2. Now the place where we were hardcoding the address we simply replace it by s_priceFeed.(what ever we need to call)
+3. Then additonally in the priceConverter contract we update the function to take input parameter as (AggregatorV3Interface priceFeed)
+4. We also need to refactor all the parameters which were using the AggregatorV3Interface one including Fund And ConvertionRate function
+
+5. Now we will have to provide the address in both deploy and test contracts,We see we need to deploy it twice in both deploy adn test scripts so we can call it 
+6. Right now we are using the command like forge test --fork-url $SEPOLIA_RPC_URL this creates many api calls if we keep doing it again and again and will become expensive
+
+7. Now the whole pupose of refactoring was that we didnt have to hardcode any address but we are hard coding it so for this we can create a MOCK contract
+8. We should create a HelperConfig file in the script and keep all the chains and ccreate a Mock contract there
+9. Then we should import it to the deploy script and create a HelperConfig before the broadcast
+10. After we create the HelperConfig in deploy script we need to replace the hardcoded value with priceFeed which comes from this HelperConfig
+
+These were steps for getting other on other networks like Sepolia and Mainnet , Let us see for the LocalHost or anvil 
+For this we need to create something know as MOCKS for anvil
+
+1. We need to create a mocks file in the test folder and then create a MockV3Aggregator file in this 
+2. After we create the MockV3Aggregator then import this to the HelperConfig file and create 2 store vaiables DECIMALS and INTIAL_PRICE
+3. Provide this DECIMALS and INTIAL_PRICE to the MockV3Aggregator and this is how we get the price of 
