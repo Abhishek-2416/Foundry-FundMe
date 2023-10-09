@@ -39,6 +39,18 @@ contract FundMeTest is Test{
       assertEq(version, 4); //This wont be working as the script will deploy to anvil instead and we have just provided the Sepolia address
    }
 
+   function testFundFailsWithoutEnoughEth() public{
+      vm.expectRevert(); //The next line should revert
+      fundMe.fund();//This is us sending 0eth so it should fail
+   }
+
+   //Now we are checking if we send enough value then it should updates the datastrucutres
+   function testFundUpdatesFundDataStructures() public{
+      fundMe.fund{value: 1e18}();
+      uint256 amountFunded = fundMe.getAddressToAmountFunded(USER);
+      assertEq(amountFunded,1e18)
+   }
+
 }
 
 /*---------------------------------------------------------------------NOTES----------------------------------------------------------------------------------------
