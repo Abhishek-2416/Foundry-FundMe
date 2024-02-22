@@ -4,6 +4,7 @@ pragma solidity ^0.8.18;
 import {Test} from "forge-std/Test.sol";
 import {FundMe} from "../src/FundMe.sol";
 import {console} from "forge-std/Test.sol";
+import {DeployFundMe} from "../script/DeployFundMe.s.sol";
 
 contract FundMeTest is Test {
     FundMe public fundMe;
@@ -13,7 +14,8 @@ contract FundMeTest is Test {
         //This is how the flow of the contract while testing works
 
         //We -> FundMeTest -> FundMe , Here we deploy the FundMeTest and this FundMeTest then deploys the FundMe Contract
-        fundMe = new FundMe();
+        DeployFundMe deployFundMe = new DeployFundMe();
+        fundMe = deployFundMe.run();
     }
 
     function testMinimumDollarValue() external {
@@ -25,10 +27,10 @@ contract FundMeTest is Test {
 
     function testOwner() external {
         //We write the below test case direct it will fail as in we will have
-        // assertEq(fundMe.i_owner(), msg.sender);
+        assertEq(fundMe.i_owner(), msg.sender);
 
         //So here we need to check if the owner is what we expect or not
-        assertEq(fundMe.i_owner(), address(this));
+        // assertEq(fundMe.i_owner(), address(this));
     }
 
     function testPriceFeedVersionIsAccurate() external {
