@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
+import {Vm} from "forge-std/Vm.sol";
 import {Test} from "forge-std/Test.sol";
 import {FundMe} from "../src/FundMe.sol";
 import {console} from "forge-std/Test.sol";
@@ -10,10 +11,11 @@ contract FundMeTest is Test {
     FundMe public fundMe;
 
     //Creating addresses
-    address bob = makeAddr("bob");
+    address bob = address(0x1);
 
     //Constants
-    uint256 constant FUND_VALUE = 10e18;
+    uint256 constant FUND_VALUE = 1 ether;
+    uint256 constant STARTING_BALANCE = 10 ether;
 
     //This is the default thing and we have to create the function "setUp" before we start writing any test
     function setUp() external {
@@ -22,7 +24,8 @@ contract FundMeTest is Test {
         //We -> FundMeTest -> FundMe , Here we deploy the FundMeTest and this FundMeTest then deploys the FundMe Contract
         DeployFundMe deployFundMe = new DeployFundMe();
         fundMe = deployFundMe.run();
-        vm.deal(bob, 1000e18);
+
+        vm.deal(bob, STARTING_BALANCE);
     }
 
     function testMinimumDollarValue() external {
@@ -59,5 +62,6 @@ contract FundMeTest is Test {
         fundMe.fund{value: FUND_VALUE}();
 
         assertEq(fundMe.getAddressToAmountFunded(bob), FUND_VALUE);
+        assertEq(fundMe.getFunder(0), bob);
     }
 }
