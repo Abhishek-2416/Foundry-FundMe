@@ -9,6 +9,12 @@ import {DeployFundMe} from "../script/DeployFundMe.s.sol";
 contract FundMeTest is Test {
     FundMe public fundMe;
 
+    //Creating addresses
+    address bob = makeAddr("bob");
+
+    //Constants
+    uint256 constant FUND_VALUE = 10e18;
+
     //This is the default thing and we have to create the function "setUp" before we start writing any test
     function setUp() external {
         //This is how the flow of the contract while testing works
@@ -16,6 +22,7 @@ contract FundMeTest is Test {
         //We -> FundMeTest -> FundMe , Here we deploy the FundMeTest and this FundMeTest then deploys the FundMe Contract
         DeployFundMe deployFundMe = new DeployFundMe();
         fundMe = deployFundMe.run();
+        vm.deal(bob, 1000e18);
     }
 
     function testMinimumDollarValue() external {
@@ -27,7 +34,7 @@ contract FundMeTest is Test {
 
     function testOwner() external {
         //We write the below test case direct it will fail as in we will have
-        assertEq(fundMe.i_owner(), msg.sender);
+        assertEq(fundMe.getOwner(), msg.sender);
 
         //So here we need to check if the owner is what we expect or not
         // assertEq(fundMe.i_owner(), address(this));
@@ -41,7 +48,16 @@ contract FundMeTest is Test {
         assertEq(version, 4);
     }
 
-    function testFund() external {
-        //To make sure the fund FUnction works we need to make sure the getConversionRate works
+    function testFundFailsWithoutEnoughETH() external {
+        //Here we are sending zero value and seeing if the function fails when less is sent
+        vm.expectRevert();
+        fundMe.fund();
+    }
+
+    function testFundUpdatesFundedDataStructure() public {
+        vm.prank(bob);
+        fundMe.fund{value: FUND_VALUE}();
+
+        assertEq(fundMe.getAddressToAmountFunded(bob), FUND_VALUE);
     }
 }
