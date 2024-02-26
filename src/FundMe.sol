@@ -70,6 +70,11 @@ contract FundMe {
         require(success);
     }
 
+    /**
+     * Here we are going to create a function for cheaperWithdraw
+     * How are we going to do this ? , We all know reading and writing from the storage it costs a lots of gas
+     * So here we are going to use the memory and read from memory which is a lot cheaper in terms of Gas used
+     */
     function cheaperWithdraw() public onlyOwner {
         address[] memory funders = s_funders;
         // mappings can't be in memory, sorry!

@@ -1,0 +1,11 @@
+When we are using an contract all the variables and all are stored in the "storage" variables
+
+So for example the we store the uint256 favouriteNumber = 25 , bool someBool , uint256[] myArray;
+In this case 1. The favouriteNumber and bool will be stored in storage variables
+             2. While the array wont be stored in the storage variable but the length of the array will be stored there 
+             3. While all the variables which are defined under a function they wont be stored in the storage , they will be created when function is running.
+             4. And constant and immutable variables also wont be stored in the storage variable
+
+             And to check the storage Layout of the contract
+
+             "forge inspect FundMe storageLayout"
