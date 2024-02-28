@@ -20,32 +20,33 @@ import {DevOpsTools} from "foundry-devops/src/DevOpsTools.sol"; //We use this to
 contract FundFundMe is Script {
     uint256 constant FUND_VALUE = 0.1 ether;
 
-    function run() external {
-        //Here we wont have to always put in the address of the already deployed FundMe contract instead of that here we are using the DevOpsTools and we get the most recently deployed thing
-        address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("FundMe", block.chainid);
-        fundFundMe(mostRecentlyDeployed);
-    }
-
     function fundFundMe(address mostRecentlyDeployed) public {
         vm.startBroadcast();
         FundMe(payable(mostRecentlyDeployed)).fund{value: FUND_VALUE}();
         vm.stopBroadcast();
         console.log("Funded FundMe with ", FUND_VALUE);
     }
+
+    function run() external {
+        //Here we wont have to always put in the address of the already deployed FundMe contract instead of that here we are using the DevOpsTools and we get the most recently deployed thing
+        address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("FundMe", block.chainid);
+        fundFundMe(mostRecentlyDeployed);
+    }
 }
 
 contract WithdrawFundMe is Script {
     uint256 constant FUND_VALUE = 0.1 ether;
 
-    function run() external {
-        //Here we wont have to always put in the address of the already deployed FundMe contract instead of that here we are using the DevOpsTools and we get the most recently deployed thing
-        address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("FundMe", block.chainid);
-        withdrawFundMe(mostRecentlyDeployed);
-    }
-
     function withdrawFundMe(address mostRecentlyDeployed) public {
         vm.startBroadcast();
         FundMe(payable(mostRecentlyDeployed)).withdraw();
         vm.stopBroadcast();
+        console.log("Withdraw FundMe balance");
+    }
+
+    function run() external {
+        //Here we wont have to always put in the address of the already deployed FundMe contract instead of that here we are using the DevOpsTools and we get the most recently deployed thing
+        address mostRecentlyDeployed = DevOpsTools.get_most_recent_deployment("FundMe", block.chainid);
+        withdrawFundMe(mostRecentlyDeployed);
     }
 }

@@ -5,10 +5,12 @@ import {Vm} from "forge-std/Vm.sol";
 import {Test} from "forge-std/Test.sol";
 import {FundMe} from "../../src/FundMe.sol";
 import {console} from "forge-std/Test.sol";
+import {HelperConfig} from "../../script/HelperConfig.s.sol";
 import {DeployFundMe} from "../../script/DeployFundMe.s.sol";
 
 contract FundMeTest is Test {
     FundMe public fundMe;
+    HelperConfig public helperConfig;
 
     //Creating addresses
     address bob = address(0x1);
@@ -30,7 +32,7 @@ contract FundMeTest is Test {
 
         //We -> FundMeTest -> FundMe , Here we deploy the FundMeTest and this FundMeTest then deploys the FundMe Contract
         DeployFundMe deployFundMe = new DeployFundMe();
-        fundMe = deployFundMe.run();
+        (fundMe, helperConfig) = deployFundMe.run();
 
         vm.deal(bob, STARTING_BALANCE);
     }
