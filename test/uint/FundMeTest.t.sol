@@ -14,7 +14,7 @@ contract FundMeTest is Test {
     address bob = address(0x1);
 
     //Constants
-    uint256 constant FUND_VALUE = 1 ether;
+    uint256 constant FUND_VALUE = 0.2 ether;
     uint256 constant STARTING_BALANCE = 10 ether;
     uint256 constant GAS_PRICE = 1;
 
