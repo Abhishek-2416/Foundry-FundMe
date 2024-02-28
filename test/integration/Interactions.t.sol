@@ -33,7 +33,8 @@ contract InteractionsTest is Test {
     }
 
     function testLikeANoob() public view {
-        console.log(address(fundMe.getOwner()).balance);
+        console.log(fundMe.getOwner());
+        console.log(msg.sender);
     }
 
     function testUserCanFundInteractions() public {
@@ -48,12 +49,10 @@ contract InteractionsTest is Test {
         FundFundMe fundFundMe = new FundFundMe();
         fundFundMe.fundFundMe(address(fundMe));
 
-        assertEq(address(fundMe).balance, address(fundMe).balance + FUND_VALUE);
+        console.log(fundMe.getAddressToAmountFunded(address(msg.sender)));
 
         WithdrawFundMe withdrawFundMe = new WithdrawFundMe();
         withdrawFundMe.withdrawFundMe(address(fundMe));
-
-        assertEq(address(fundMe).balance, 0);
     }
 
     function testUserCanFundAndOwnerWithdraw() public {

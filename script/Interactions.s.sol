@@ -47,6 +47,5 @@ contract WithdrawFundMe is Script {
         vm.startBroadcast();
         FundMe(payable(mostRecentlyDeployed)).withdraw();
         vm.stopBroadcast();
-        console.log("Funded FundMe with ", FUND_VALUE);
     }
 }
