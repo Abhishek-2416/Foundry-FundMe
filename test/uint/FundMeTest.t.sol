@@ -32,7 +32,7 @@ contract FundMeTest is Test {
 
         //We -> FundMeTest -> FundMe , Here we deploy the FundMeTest and this FundMeTest then deploys the FundMe Contract
         DeployFundMe deployFundMe = new DeployFundMe();
-        (fundMe, helperConfig) = deployFundMe.run();
+        (fundMe) = deployFundMe.run();
 
         vm.deal(bob, STARTING_BALANCE);
     }
